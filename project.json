@@ -1,0 +1,27 @@
+{
+  "name": "@pokedex/source",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "targets": {
+    "check-format:quick": {
+      "parallelism": false
+    },
+    "lint": {
+      "dependsOn": ["@pokedex/source:lint-package-lock"],
+      "cache": true,
+      "inputs": ["{projectRoot}/package-lock.json"]
+    },
+    "lint-package-lock": {
+      "cache": true,
+      "inputs": ["{projectRoot}/package-lock.json"]
+    },
+    "prepush": {
+      "dependsOn": [
+        "nx:format-native",
+        "nx:lint-native",
+        "check-commit",
+        "check-format:quick",
+        "check-lock-files"
+      ]
+    }
+  }
+}

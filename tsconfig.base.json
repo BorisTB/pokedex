@@ -1,20 +1,20 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "target": "ES2021",
     "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
+    "types": ["node", "jest"],
+    "typeRoots": ["./node_modules/@types"],
+    "lib": ["ES2022"],
+    "declaration": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
-    "paths": {}
-  },
-  "exclude": ["node_modules", "tmp"]
+    "allowJs": true,
+    "composite": true,
+    "declarationMap": true
+  }
 }
