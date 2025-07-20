@@ -1,4 +1,5 @@
 const scopes = [
+  { value: 'core', name: 'core:     anything workspace core specific' },
   { value: 'web', name: 'web:               anything Web App specific' },
   { value: 'ui', name: 'ui:                  anything UI specific' }
 ];
