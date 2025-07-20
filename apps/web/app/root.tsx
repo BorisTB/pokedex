@@ -9,23 +9,11 @@ import {
 } from 'react-router';
 
 import { AppNav } from './app-nav';
+import Providers from './providers';
 
 export const meta: MetaFunction = () => [
   {
-    title: 'New Nx React Router App'
-  }
-];
-
-export const links: LinksFunction = () => [
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous'
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'
+    title: 'Pokedex'
   }
 ];
 
@@ -49,5 +37,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <Providers>
+      <Outlet />
+    </Providers>
+  );
 }

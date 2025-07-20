@@ -10,9 +10,9 @@ const scopeComplete = require('child_process')
   .toString()
   .trim()
   .split('\n')
-  .find((r) => ~r.indexOf('M  packages'))
+  .find((r) => ~r.indexOf('M  libs'))
   ?.replace(/(\/)/g, '%%')
-  ?.match(/packages%%((\w|-)*)/)?.[1];
+  ?.match(/libs%%((\w|-)*)/)?.[1];
 
 /** @type {import('cz-git').CommitizenGitOptions} */
 module.exports = {
