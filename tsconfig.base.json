@@ -20,7 +20,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@pokedex/data-access": ["libs/data-access/src/index.ts"]
+      "@pokedex/data-access": ["libs/data-access/src/index.ts"],
+      "@pokedex/ui": ["libs/ui/src/index.ts"]
     },
     "types": ["node", "jest"],
     "resolveJsonModule": true,
