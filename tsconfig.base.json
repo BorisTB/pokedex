@@ -1,20 +1,31 @@
 {
+  "include": [
+    "**/*",
+    "**/.server/**/*",
+    "**/.client/**/*",
+    ".react-router/types/**/*"
+  ],
   "compilerOptions": {
-    "target": "ES2021",
-    "importHelpers": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
-    "types": ["node", "jest"],
-    "typeRoots": ["./node_modules/@types"],
-    "lib": ["ES2022"],
-    "declaration": true,
-    "resolveJsonModule": true,
+    "skipDefaultLibCheck": true,
     "baseUrl": ".",
+    "paths": {
+      "@pokedex/data-access": ["libs/data-access/src/index.ts"],
+      "@pokedex/ui": ["libs/ui/src/index.ts"]
+    },
+    "types": ["node", "jest"],
+    "resolveJsonModule": true,
     "allowJs": true,
-    "composite": true,
     "declarationMap": true
   }
 }
