@@ -1,10 +1,11 @@
 import type { Route } from './+types/list';
-import { prefsCookie } from '../cookies.server';
 import {
+  extractUserPrefs,
   getPokemonByName,
   getQueryClient,
   listPokemons,
-  useListPokemons
+  serializeUserPrefs,
+  updateUserPrefs
 } from '@pokedex/data-access';
 import {
   dehydrate,
@@ -12,19 +13,11 @@ import {
   useQueryClient
 } from '@tanstack/react-query';
 import { data, useFetcher, useNavigate } from 'react-router';
-import { DataTable } from 'mantine-datatable';
-import { Container } from '@mantine/core';
 import { useCallback } from 'react';
-
-const LIMIT_OPTIONS = [10, 20, 50];
-const DEFAULT_LIMIT = LIMIT_OPTIONS[1];
+import { PokemonList } from '../features/pokemon/list';
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const cookieHeader = request.headers.get('Cookie');
-  const cookie = (await prefsCookie.parse(cookieHeader)) || {};
-
-  const page = cookie.page || 1;
-  const limit = cookie.limit || DEFAULT_LIMIT;
+  const { page, limit } = await extractUserPrefs(request);
 
   const queryClient = getQueryClient();
   const queryOptions = listPokemons({ offset: page, limit: limit });
@@ -35,76 +28,19 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  const cookieHeader = request.headers.get('Cookie');
-  const cookie = (await prefsCookie.parse(cookieHeader)) || {};
   const formData = await request.formData();
-
-  const prevPage = cookie.page || 1;
-  const prevLimit = cookie.limit || DEFAULT_LIMIT;
-
   const page = formData.get('page');
-  cookie.page = Number(page) || 1;
-
   const limit = formData.get('limit');
-  cookie.limit = Number(limit) || DEFAULT_LIMIT;
 
-  if (cookie.limit > prevLimit) {
-    const d = cookie.limit / prevLimit;
-    cookie.page = Math.max(1, Math.ceil(prevPage / d));
-  }
+  const cookie = await updateUserPrefs(request, { page, limit });
 
   return data(
     { page, limit },
     {
       headers: {
-        'Set-Cookie': await prefsCookie.serialize(cookie)
+        'Set-Cookie': await serializeUserPrefs(cookie)
       }
     }
-  );
-}
-
-export interface ListProps {
-  page: number;
-  limit: number;
-  onLimitChange: (limit: number) => void;
-  onPageChange: (limit: number) => void;
-  onRowClick: (recordId: string) => void;
-}
-
-function List({
-  page,
-  limit,
-  onLimitChange,
-  onPageChange,
-  onRowClick
-}: ListProps) {
-  const { data, isFetching } = useListPokemons({
-    offset: (page - 1) * limit,
-    limit
-  });
-
-  return (
-    <DataTable
-      height={450}
-      withTableBorder
-      textSelectionDisabled
-      borderRadius="sm"
-      withColumnBorders
-      striped
-      highlightOnHover
-      loaderType="dots"
-      fetching={isFetching}
-      idAccessor="name"
-      totalRecords={data?.count}
-      page={page}
-      onPageChange={onPageChange}
-      recordsPerPage={limit}
-      recordsPerPageOptions={LIMIT_OPTIONS}
-      onRecordsPerPageChange={onLimitChange}
-      records={data?.results || []}
-      columns={[{ accessor: 'name' }]}
-      onRowClick={({ record }) => onRowClick(record.name)}
-    />
   );
 }
 
@@ -131,16 +67,14 @@ export default function ListPage({ loaderData }: Route.ComponentProps) {
   );
 
   return (
-    <Container size={840} my={80}>
-      <HydrationBoundary state={qcState}>
-        <List
-          page={page}
-          limit={limit}
-          onPageChange={onPageChange}
-          onLimitChange={onLimitChange}
-          onRowClick={onRowClick}
-        />
-      </HydrationBoundary>
-    </Container>
+    <HydrationBoundary state={qcState}>
+      <PokemonList
+        page={page}
+        limit={limit}
+        onPageChange={onPageChange}
+        onLimitChange={onLimitChange}
+        onRowClick={onRowClick}
+      />
+    </HydrationBoundary>
   );
 }

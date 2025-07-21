@@ -9,18 +9,11 @@ import {
 } from 'react-router';
 import type { Route } from './+types/root';
 import Providers from './providers';
-import {
-  Box,
-  Code,
-  ColorSchemeScript,
-  Container,
-  mantineHtmlProps,
-  Text,
-  Title
-} from '@mantine/core';
+import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 
 import '@mantine/core/styles.layer.css';
 import 'mantine-datatable/styles.layer.css';
+import { AppLayout, ErrorDetail } from '@pokedex/ui';
 
 export const meta: MetaFunction = () => [
   {
@@ -53,7 +46,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <Providers>
-      <Outlet />
+      <AppLayout>
+        <Outlet />
+      </AppLayout>
     </Providers>
   );
 }
@@ -74,15 +69,5 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     stack = error.stack;
   }
 
-  return (
-    <Container component="main" pt="xl" p="md" mx="auto">
-      <Title>{message}</Title>
-      <Text>{details}</Text>
-      {stack && (
-        <Box component="pre" w="100%" style={{ overflowX: 'auto' }} p="md">
-          <Code>{stack}</Code>
-        </Box>
-      )}
-    </Container>
-  );
+  return <ErrorDetail message={message} details={details} stack={stack} />;
 }

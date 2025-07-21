@@ -38,7 +38,9 @@ export function getQueryClient() {
       browserQueryClient = makeQueryClient();
     }
 
-    window.__TANSTACK_QUERY_CLIENT__ = browserQueryClient;
+    if (import.meta?.env?.DEV) {
+      window.__TANSTACK_QUERY_CLIENT__ = browserQueryClient;
+    }
 
     return browserQueryClient;
   }
