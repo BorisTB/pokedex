@@ -15,6 +15,7 @@ import {
 import { data, useFetcher, useNavigate } from 'react-router';
 import { useCallback } from 'react';
 import { PokemonList } from '../features/pokemon/list';
+import { BasicErrorBoundary } from '../error/basic-error-boundary';
 
 export async function loader({ request }: Route.LoaderArgs) {
   const { page, limit } = await extractUserPrefs(request);
@@ -68,13 +69,15 @@ export default function ListPage({ loaderData }: Route.ComponentProps) {
 
   return (
     <HydrationBoundary state={qcState}>
-      <PokemonList
-        page={page}
-        limit={limit}
-        onPageChange={onPageChange}
-        onLimitChange={onLimitChange}
-        onRowClick={onRowClick}
-      />
+      <BasicErrorBoundary>
+        <PokemonList
+          page={page}
+          limit={limit}
+          onPageChange={onPageChange}
+          onLimitChange={onLimitChange}
+          onRowClick={onRowClick}
+        />
+      </BasicErrorBoundary>
     </HydrationBoundary>
   );
 }

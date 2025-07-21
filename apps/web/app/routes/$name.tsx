@@ -7,6 +7,8 @@ import {
   PokemonDetailSkeleton
 } from '../features/pokemon/detail';
 import { Suspense } from 'react';
+import { BasicErrorBoundary } from '../error/basic-error-boundary';
+import { Divider } from '@mantine/core';
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { pokemonName } = params;
@@ -26,10 +28,13 @@ export default function PokemonProfilePage({
 
   return (
     <HydrationBoundary state={qcState}>
-      <Link to="/">BACK</Link>
-      <Suspense fallback={<PokemonDetailSkeleton />}>
-        <PokemonDetail name={pokemonName} />
-      </Suspense>
+      <Link to="/">{`<- Back to list`}</Link>
+      <Divider />
+      <BasicErrorBoundary>
+        <Suspense fallback={<PokemonDetailSkeleton />}>
+          <PokemonDetail name={pokemonName} />
+        </Suspense>
+      </BasicErrorBoundary>
     </HydrationBoundary>
   );
 }

@@ -12,7 +12,8 @@ export const getPokemonByName = (pokemonName: PokemonName) =>
     queryKey: ['getPokemonByName', pokemonName],
     queryFn: async () => {
       return pokeApi.getPokemonByName(pokemonName);
-    }
+    },
+    throwOnError: true
   });
 
 export function useGetPokemonByName(pokemonName: PokemonName) {

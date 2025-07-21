@@ -16,7 +16,8 @@ export const listPokemons = ({ offset, limit }: ListPokemonsParams = {}) =>
     queryFn: async () => {
       return pokeApi.listPokemons(offset, limit);
     },
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
+    throwOnError: true
   });
 
 export function useListPokemons(params?: ListPokemonsParams) {

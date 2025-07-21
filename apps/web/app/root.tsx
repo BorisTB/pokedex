@@ -10,10 +10,10 @@ import {
 import type { Route } from './+types/root';
 import Providers from './providers';
 import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
+import { AppLayout, ErrorDetail } from '@pokedex/ui';
 
 import '@mantine/core/styles.layer.css';
 import 'mantine-datatable/styles.layer.css';
-import { AppLayout, ErrorDetail } from '@pokedex/ui';
 
 export const meta: MetaFunction = () => [
   {
