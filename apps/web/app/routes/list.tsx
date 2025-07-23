@@ -21,7 +21,10 @@ export async function loader({ request }: Route.LoaderArgs) {
   const { page, limit } = await extractUserPrefs(request);
 
   const queryClient = getQueryClient();
-  const queryOptions = listPokemons({ offset: page, limit: limit });
+  const queryOptions = listPokemons({
+    offset: (page - 1) * limit,
+    limit: limit
+  });
 
   queryClient.prefetchQuery(queryOptions);
 

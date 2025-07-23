@@ -10,7 +10,7 @@ import {
 import type { Route } from './+types/root';
 import Providers from './providers';
 import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
-import { AppLayout, ErrorDetail } from '@pokedex/ui';
+import { AppLayout, ErrorDetail, ThemeProvider } from '@pokedex/ui';
 
 import '@mantine/core/styles.layer.css';
 import 'mantine-datatable/styles.layer.css';
@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

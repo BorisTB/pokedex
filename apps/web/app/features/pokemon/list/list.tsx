@@ -1,5 +1,7 @@
 import { LIMIT_OPTIONS, useListPokemons } from '@pokedex/data-access';
 import { DataTable } from 'mantine-datatable';
+import { useMounted } from '@mantine/hooks';
+import { NamedAPIResourceList } from 'pokenode-ts';
 
 export interface PokemonListProps {
   page: number;
@@ -21,6 +23,13 @@ export function PokemonList({
     limit
   });
 
+  const mounted = useMounted();
+
+  const records: NamedAPIResourceList['results'] =
+    mounted && data?.results ? data.results : [];
+  const fetching = isFetching || !mounted;
+  const totalRecords = mounted ? data?.count : 0;
+
   return (
     <DataTable
       height={450}
@@ -31,15 +40,15 @@ export function PokemonList({
       striped
       highlightOnHover
       loaderType="dots"
-      fetching={isFetching}
+      fetching={fetching}
       idAccessor="name"
-      totalRecords={data?.count}
+      totalRecords={totalRecords}
       page={page}
       onPageChange={onPageChange}
       recordsPerPage={limit}
       recordsPerPageOptions={LIMIT_OPTIONS}
       onRecordsPerPageChange={onLimitChange}
-      records={data?.results || []}
+      records={records}
       columns={[{ accessor: 'name' }]}
       onRowClick={({ record }) => onRowClick(record.name)}
     />
